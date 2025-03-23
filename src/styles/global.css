@@ -28,3 +28,39 @@
 .equipment-item:hover {
   color: #4A90E2;
 }
+
+/* India Mart Specific Styles */
+.supplier-card {
+  transition: all 0.3s ease;
+}
+
+.supplier-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Category Item Hover */
+.category-item {
+  transition: all 0.2s ease;
+}
+
+.category-item:hover {
+  color: #0078D7;
+}
+
+/* Button Animation */
+.btn-pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 120, 215, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 120, 215, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 120, 215, 0);
+  }
+}
+

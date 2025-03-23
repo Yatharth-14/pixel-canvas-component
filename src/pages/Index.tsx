@@ -1,10 +1,10 @@
 
-import MedicalEquipment from '../components/medical/MedicalEquipment';
+import IndiamartLanding from '../components/landing/IndiamartLanding';
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <MedicalEquipment />
+      <IndiamartLanding />
     </div>
   );
 };
