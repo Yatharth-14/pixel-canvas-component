@@ -64,3 +64,34 @@
   }
 }
 
+/* Product Page Styles */
+.product-gallery-thumb {
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.product-gallery-thumb:hover {
+  border-color: #ddd;
+}
+
+.product-gallery-thumb.active {
+  border-color: #0078D7;
+}
+
+/* Star Rating Animation */
+@keyframes star-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.star-rating:hover .star {
+  animation: star-pulse 0.5s ease-in-out;
+}
