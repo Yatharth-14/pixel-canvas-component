@@ -69,10 +69,12 @@ const MyProducts = () => {
             <h1 className="text-2xl font-semibold text-gray-800">My Products</h1>
             <p className="text-gray-500">Manage your listed products</p>
           </div>
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="mr-2 h-4 w-4" />
-            Add New Product
-          </Button>
+          <Link to="/add-product">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="mr-2 h-4 w-4" />
+              Add New Product
+            </Button>
+          </Link>
         </div>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
