@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import ProductImageGallery from "./ProductImageGallery";
 import ProductSpecifications from "./ProductSpecifications";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 
 // Mock product data - in a real app this would come from an API
 const getMockProduct = (id: string | undefined) => {
@@ -44,6 +45,7 @@ const getMockProduct = (id: string | undefined) => {
     ],
     inStock: true,
     brandName: "MediTech Instruments",
+    vendorId: "v123",
     sku: "MT-DT2023-PRO",
     deliveryEstimate: "2-4 business days"
   };
@@ -109,9 +111,11 @@ const ProductDetailView: React.FC<ProductDetailViewProps> = ({ productId }) => {
               </span>
             </div>
             <div className="flex items-center mb-1">
-              <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 mr-3">
-                {product.brandName}
-              </Badge>
+              <Link to={`/vendor/${product.vendorId}`}>
+                <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 mr-3 hover:bg-blue-100 cursor-pointer">
+                  {product.brandName}
+                </Badge>
+              </Link>
               <span className="text-gray-500 text-sm">SKU: {product.sku}</span>
             </div>
           </div>
