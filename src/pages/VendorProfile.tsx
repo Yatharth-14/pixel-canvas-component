@@ -1,7 +1,7 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowLeft, Star, MapPin, Phone, Mail, Clock, Shield, Award, CheckCircle } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import { ArrowLeft, Star, MapPin, Phone, Mail, Clock, Shield, Award, CheckCircle, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -50,6 +50,8 @@ const vendorData = {
 };
 
 const VendorProfile = () => {
+  const { vendorId } = useParams();
+
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Cover Image Section */}
@@ -62,10 +64,17 @@ const VendorProfile = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-medical-primary to-medical-primary/80"></div>
         
         <div className="container mx-auto px-4 absolute inset-x-0 bottom-0 pb-4">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center justify-between mb-4">
             <Link to="/" className="text-white hover:text-gray-200 flex items-center">
               <ArrowLeft className="h-4 w-4 mr-1" />
               Back to Home
+            </Link>
+            
+            <Link to={`/vendor/${vendorId}/edit`}>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                <Edit className="h-4 w-4 mr-2" />
+                Edit Profile
+              </Button>
             </Link>
           </div>
         </div>
