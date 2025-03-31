@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Bell, Search, ShoppingCart, User } from 'lucide-react';
+import { Bell, Search, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Link } from 'react-router-dom';
 
 const LandingHeader: React.FC = () => {
   return (
@@ -23,10 +24,24 @@ const LandingHeader: React.FC = () => {
             <Button variant="ghost" size="sm" className="p-1">
               <ShoppingCart className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="flex items-center space-x-1 p-1">
-              <User className="h-4 w-4" />
-              <span className="text-sm">Sign In</span>
-            </Button>
+            <div className="flex space-x-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-medical-primary border-medical-primary hover:bg-medical-primary/10"
+                asChild
+              >
+                <Link to="/login">Login</Link>
+              </Button>
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="bg-medical-primary hover:bg-medical-primary/90"
+                asChild
+              >
+                <Link to="/register">Register</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>

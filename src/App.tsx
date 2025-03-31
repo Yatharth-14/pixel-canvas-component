@@ -11,6 +11,8 @@ import MyProducts from "./pages/MyProducts";
 import AddProduct from "./pages/AddProduct";
 import VendorProfile from "./pages/VendorProfile";
 import EditVendorProfile from "./pages/EditVendorProfile";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/add-product" element={<AddProduct />} />
             <Route path="/vendor/:vendorId" element={<VendorProfile />} />
             <Route path="/vendor/:vendorId/edit" element={<EditVendorProfile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
