@@ -3,9 +3,16 @@ import React from 'react';
 import { Bell, Search, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LandingHeader: React.FC = () => {
+  const navigate = useNavigate();
+  
+  const handleCategoryClick = (category: string) => {
+    // Navigate to category page with the category as a query parameter
+    navigate(`/category/${category.toLowerCase().replace(/\s+&\s+/g, '-').replace(/\s+/g, '-')}`);
+  };
+
   return (
     <header className="bg-white shadow-sm">
       {/* Top bar */}
@@ -80,13 +87,13 @@ const LandingHeader: React.FC = () => {
         <div className="container mx-auto px-4">
           <nav className="flex overflow-x-auto">
             {['Building & Construction', 'Electronics & Electrical', 'Industrial Supplies', 'Pharmaceutical', 'Agriculture', 'Food & Beverages'].map((item) => (
-              <a 
+              <button 
                 key={item} 
-                href="#" 
-                className="px-4 py-3 text-white whitespace-nowrap hover:bg-medical-accent/20 text-sm"
+                onClick={() => handleCategoryClick(item)}
+                className="px-4 py-3 text-white whitespace-nowrap hover:bg-medical-accent/20 text-sm cursor-pointer"
               >
                 {item}
-              </a>
+              </button>
             ))}
           </nav>
         </div>
