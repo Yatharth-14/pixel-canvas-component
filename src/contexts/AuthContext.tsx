@@ -1,5 +1,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { db } from '../services/database';
 
 type User = {
   id: string;
@@ -13,6 +14,7 @@ type AuthContextType = {
   register: (name: string, email: string, password: string) => Promise<{ success: boolean; message: string }>;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +22,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // Check if user is already logged in on mount
@@ -28,30 +31,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(JSON.parse(storedUser));
       setIsAuthenticated(true);
     }
+    setIsLoading(false);
   }, []);
 
   const register = async (name: string, email: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      // Check if user already exists
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const existingUser = users.find((u: any) => u.email === email);
+      setIsLoading(true);
       
-      if (existingUser) {
-        return { success: false, message: 'User with this email already exists' };
-      }
-
-      // Create new user
-      const newUser = {
-        id: Date.now().toString(),
-        name,
-        email,
-        password, // In a real app, this should be hashed
-      };
-
-      // Add to "database"
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-
+      // Create user in database
+      const newUser = await db.createUser({ name, email, password });
+      
       // Log user in
       const { password: _, ...userWithoutPassword } = newUser;
       setUser(userWithoutPassword);
@@ -61,30 +50,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: true, message: 'Registration successful!' };
     } catch (error) {
       console.error('Registration error:', error);
-      return { success: false, message: 'Registration failed. Please try again.' };
+      return { 
+        success: false, 
+        message: error instanceof Error ? error.message : 'Registration failed. Please try again.' 
+      };
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const login = async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      // Get users from localStorage
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const user = users.find((u: any) => u.email === email && u.password === password);
-
-      if (!user) {
+      setIsLoading(true);
+      
+      // Authenticate user
+      const authenticatedUser = await db.authenticateUser(email, password);
+      
+      if (!authenticatedUser) {
         return { success: false, message: 'Invalid email or password' };
       }
 
       // Log user in
-      const { password: _, ...userWithoutPassword } = user;
-      setUser(userWithoutPassword);
-      localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+      setUser(authenticatedUser);
+      localStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
       setIsAuthenticated(true);
 
       return { success: true, message: 'Login successful!' };
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, message: 'Login failed. Please try again.' };
+      return { 
+        success: false, 
+        message: error instanceof Error ? error.message : 'Login failed. Please try again.' 
+      };
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -95,7 +94,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, register, logout, isAuthenticated, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
