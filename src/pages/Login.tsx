@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -21,7 +21,7 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -32,6 +32,13 @@ const Login = () => {
       password: '',
     },
   });
+
+  useEffect(() => {
+    // Redirect if already authenticated
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   const onSubmit = async (data: LoginValues) => {
     setIsLoading(true);
@@ -47,9 +54,7 @@ const Login = () => {
         });
         
         // Redirect to home after successful login
-        setTimeout(() => {
-          navigate('/');
-        }, 500);
+        navigate('/');
       } else {
         setError(result.message);
       }

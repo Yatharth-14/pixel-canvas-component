@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,7 +26,7 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, isAuthenticated } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -40,6 +40,13 @@ const Register = () => {
     },
   });
 
+  useEffect(() => {
+    // Redirect if already authenticated
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
+
   const onSubmit = async (data: RegisterValues) => {
     setIsLoading(true);
     setError(null);
@@ -50,13 +57,13 @@ const Register = () => {
       if (result.success) {
         toast({
           title: 'Registration successful',
-          description: `Welcome, ${data.name}! Your account has been created.`,
+          description: result.message,
         });
         
         // Redirect to home after successful registration
         setTimeout(() => {
-          navigate('/');
-        }, 500);
+          navigate('/login');
+        }, 1500);
       } else {
         setError(result.message);
       }
