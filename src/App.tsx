@@ -14,30 +14,33 @@ import EditVendorProfile from "./pages/EditVendorProfile";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import CategoryPage from "./pages/CategoryPage";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen bg-gray-50">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/product/:productId" element={<ProductDetail />} />
-            <Route path="/my-products" element={<MyProducts />} />
-            <Route path="/add-product" element={<AddProduct />} />
-            <Route path="/vendor/:vendorId" element={<VendorProfile />} />
-            <Route path="/vendor/:vendorId/edit" element={<EditVendorProfile />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/category/:categoryId" element={<CategoryPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="min-h-screen bg-gray-50">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/product/:productId" element={<ProductDetail />} />
+              <Route path="/my-products" element={<MyProducts />} />
+              <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/vendor/:vendorId" element={<VendorProfile />} />
+              <Route path="/vendor/:vendorId/edit" element={<EditVendorProfile />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/category/:categoryId" element={<CategoryPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const registerSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -24,6 +26,9 @@ type RegisterValues = z.infer<typeof registerSchema>;
 
 const Register = () => {
   const navigate = useNavigate();
+  const { register } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -35,18 +40,32 @@ const Register = () => {
     },
   });
 
-  const onSubmit = (data: RegisterValues) => {
-    console.log('Register data:', data);
-    // This would normally connect to an authentication service
-    toast({
-      title: 'Registration successful',
-      description: `Welcome, ${data.name}! Your account has been created.`,
-    });
+  const onSubmit = async (data: RegisterValues) => {
+    setIsLoading(true);
+    setError(null);
     
-    // For demo purposes, simulate registration and redirect to home
-    setTimeout(() => {
-      navigate('/');
-    }, 1500);
+    try {
+      const result = await register(data.name, data.email, data.password);
+      
+      if (result.success) {
+        toast({
+          title: 'Registration successful',
+          description: `Welcome, ${data.name}! Your account has been created.`,
+        });
+        
+        // Redirect to home after successful registration
+        setTimeout(() => {
+          navigate('/');
+        }, 500);
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -60,6 +79,12 @@ const Register = () => {
             <h1 className="text-2xl font-bold text-center text-medical-primary">Create an Account</h1>
             <p className="text-center text-gray-500 mt-2">Join IndiaMart to connect with suppliers</p>
           </div>
+          
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -119,8 +144,12 @@ const Register = () => {
                 )}
               />
               
-              <Button type="submit" className="w-full bg-medical-primary hover:bg-medical-primary/90">
-                Register
+              <Button 
+                type="submit" 
+                className="w-full bg-medical-primary hover:bg-medical-primary/90"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Registering...' : 'Register'}
               </Button>
             </form>
           </Form>

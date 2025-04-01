@@ -1,16 +1,31 @@
 
 import React from 'react';
-import { Bell, Search, ShoppingCart } from 'lucide-react';
+import { Bell, LogOut, Search, ShoppingCart, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const LandingHeader: React.FC = () => {
   const navigate = useNavigate();
+  const { user, logout, isAuthenticated } = useAuth();
   
   const handleCategoryClick = (category: string) => {
     // Navigate to category page with the category as a query parameter
     navigate(`/category/${category.toLowerCase().replace(/\s+&\s+/g, '-').replace(/\s+/g, '-')}`);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -31,24 +46,51 @@ const LandingHeader: React.FC = () => {
             <Button variant="ghost" size="sm" className="p-1">
               <ShoppingCart className="h-4 w-4" />
             </Button>
-            <div className="flex space-x-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="text-medical-primary border-medical-primary hover:bg-medical-primary/10"
-                asChild
-              >
-                <Link to="/login">Login</Link>
-              </Button>
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="bg-medical-primary hover:bg-medical-primary/90"
-                asChild
-              >
-                <Link to="/register">Register</Link>
-              </Button>
-            </div>
+            
+            {isAuthenticated ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    {user?.name}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-products">My Products</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to={`/vendor/${user?.id}`}>My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-500">
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="text-medical-primary border-medical-primary hover:bg-medical-primary/10"
+                  asChild
+                >
+                  <Link to="/login">Login</Link>
+                </Button>
+                <Button 
+                  variant="default" 
+                  size="sm" 
+                  className="bg-medical-primary hover:bg-medical-primary/90"
+                  asChild
+                >
+                  <Link to="/register">Register</Link>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -56,7 +98,7 @@ const LandingHeader: React.FC = () => {
       {/* Main header */}
       <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center">
-          <div className="text-2xl font-bold text-medical-primary">IndiaMart</div>
+          <Link to="/" className="text-2xl font-bold text-medical-primary">IndiaMart</Link>
         </div>
         
         <div className="flex-1 max-w-3xl">

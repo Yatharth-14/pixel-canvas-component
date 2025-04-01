@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,6 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 import { ArrowLeft } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -19,6 +21,9 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -28,18 +33,32 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data: LoginValues) => {
-    console.log('Login data:', data);
-    // This would normally connect to an authentication service
-    toast({
-      title: 'Logged in successfully',
-      description: `Welcome back, ${data.email}!`,
-    });
+  const onSubmit = async (data: LoginValues) => {
+    setIsLoading(true);
+    setError(null);
     
-    // For demo purposes, simulate login and redirect to home
-    setTimeout(() => {
-      navigate('/');
-    }, 1500);
+    try {
+      const result = await login(data.email, data.password);
+      
+      if (result.success) {
+        toast({
+          title: 'Logged in successfully',
+          description: `Welcome back, ${data.email}!`,
+        });
+        
+        // Redirect to home after successful login
+        setTimeout(() => {
+          navigate('/');
+        }, 500);
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError('An unexpected error occurred. Please try again.');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -53,6 +72,12 @@ const Login = () => {
             <h1 className="text-2xl font-bold text-center text-medical-primary">Login to IndiaMart</h1>
             <p className="text-center text-gray-500 mt-2">Enter your credentials to access your account</p>
           </div>
+          
+          {error && (
+            <Alert variant="destructive" className="mb-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -84,8 +109,12 @@ const Login = () => {
                 )}
               />
               
-              <Button type="submit" className="w-full bg-medical-primary hover:bg-medical-primary/90">
-                Login
+              <Button 
+                type="submit" 
+                className="w-full bg-medical-primary hover:bg-medical-primary/90"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Logging in...' : 'Login'}
               </Button>
             </form>
           </Form>
