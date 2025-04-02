@@ -8,7 +8,7 @@ const Index = () => {
       <IndiamartLanding />
       
       {/* Quick links to demo pages */}
-      <div className="container mx-auto px-4 py-8">
+      {/* <div className="container mx-auto px-4 py-8">
         <div className="bg-white shadow-md rounded-lg p-4 mb-8">
           <h2 className="text-xl font-semibold mb-4">Demo Pages</h2>
           <p className="mb-4 text-gray-700">Check out our demo pages:</p>
@@ -27,7 +27,7 @@ const Index = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
