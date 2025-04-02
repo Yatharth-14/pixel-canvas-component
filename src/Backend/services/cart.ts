@@ -11,8 +11,8 @@ export type CartItem = {
 };
 
 export const getCartItems = async (): Promise<CartItem[]> => {
-  const user = supabase.auth.getUser();
-  if (!user) return [];
+  const { data: user } = await supabase.auth.getUser();
+  if (!user.user) return [];
 
   const { data, error } = await supabase
     .from('cart_items')
@@ -23,6 +23,7 @@ export const getCartItems = async (): Promise<CartItem[]> => {
         images:product_images(id, image_url, is_primary)
       )
     `)
+    .eq('user_id', user.user.id)
     .order('created_at', { ascending: false });
 
   if (error) {

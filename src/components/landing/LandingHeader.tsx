@@ -168,7 +168,8 @@ const LandingHeader: React.FC = () => {
         </div>
       </div>
       
-      <style jsx>{`
+      <style>
+        {`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -176,7 +177,8 @@ const LandingHeader: React.FC = () => {
           -ms-overflow-style: none;
           scrollbar-width: none;
         }
-      `}</style>
+        `}
+      </style>
     </header>
   );
 };

@@ -49,17 +49,24 @@ export const getCategories = async (): Promise<Category[]> => {
 };
 
 export const getProductsByCategory = async (categorySlug: string): Promise<Product[]> => {
+  const { data: categoryData, error: categoryError } = await supabase
+    .from('categories')
+    .select('id')
+    .eq('slug', categorySlug)
+    .single();
+
+  if (categoryError) {
+    console.error('Error fetching category:', categoryError);
+    return [];
+  }
+
   const { data, error } = await supabase
     .from('products')
     .select(`
       *,
       images:product_images(id, image_url, is_primary)
     `)
-    .eq('category_id', (await supabase
-      .from('categories')
-      .select('id')
-      .eq('slug', categorySlug)
-      .single()).data?.id || '')
+    .eq('category_id', categoryData.id)
     .order('name');
 
   if (error) {
