@@ -1,145 +1,182 @@
 
-import React from 'react';
-import { Bell, LogOut, Search, ShoppingCart, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Search, Menu, X, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Link, useNavigate } from 'react-router-dom';
+import NotificationsDropdown from '../header/NotificationsDropdown';
+import CartDropdown from '../header/CartDropdown';
 import { useAuth } from '@/Backend/contexts/AuthContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
 const LandingHeader: React.FC = () => {
-  const navigate = useNavigate();
-  const { user, logout, isAuthenticated } = useAuth();
-  
-  const handleCategoryClick = (category: string) => {
-    // Navigate to category page with the category as a query parameter
-    navigate(`/category/${category.toLowerCase().replace(/\s+&\s+/g, '-').replace(/\s+/g, '-')}`);
-  };
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    navigate('/');
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
     <header className="bg-white shadow-sm">
-      {/* Top bar */}
-      <div className="border-b border-gray-200">
-        <div className="container mx-auto px-4 py-2 flex justify-between items-center">
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">COVID Supplies</span>
-            <span className="text-sm text-gray-600">Sell</span>
-            <span className="text-sm text-gray-600">Help</span>
+      {/* Top Navigation Bar */}
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-3">
+          <div className="flex items-center">
+            <Link to="/" className="text-xl font-bold text-medical-primary">
+              IndiaMart
+            </Link>
           </div>
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">Download App</span>
-            <Button variant="ghost" size="sm" className="p-1">
-              <Bell className="h-4 w-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="p-1">
-              <ShoppingCart className="h-4 w-4" />
-            </Button>
+
+          {/* Search Bar - Hidden on Mobile */}
+          <div className="hidden md:flex flex-1 max-w-xl mx-6">
+            <div className="relative w-full">
+              <Input
+                type="text"
+                placeholder="Search products, suppliers, categories..."
+                className="pr-10 border-gray-300 focus:border-medical-primary focus:ring-medical-primary"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-medical-primary"
+              >
+                <Search className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center space-x-1">
+            <NotificationsDropdown />
+            <CartDropdown />
             
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="flex items-center gap-2">
-                    <User className="h-4 w-4" />
-                    {user?.name}
+                  <Button variant="ghost" size="icon">
+                    <User className="h-5 w-5" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link to="/my-products">My Products</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to={`/vendor/${user?.id}`}>My Profile</Link>
+                    <Link to="/my-account">My Account</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-500">
-                    <LogOut className="h-4 w-4 mr-2" />
+                  <DropdownMenuItem onClick={handleLogout}>
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <div className="flex space-x-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="text-medical-primary border-medical-primary hover:bg-medical-primary/10"
-                  asChild
-                >
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button 
-                  variant="default" 
-                  size="sm" 
-                  className="bg-medical-primary hover:bg-medical-primary/90"
-                  asChild
-                >
-                  <Link to="/register">Register</Link>
-                </Button>
-              </div>
+              <Button variant="ghost" asChild>
+                <Link to="/login">Login</Link>
+              </Button>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Main header */}
-      <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center">
-          <Link to="/" className="text-2xl font-bold text-medical-primary">IndiaMart</Link>
-        </div>
-        
-        <div className="flex-1 max-w-3xl">
-          <div className="relative flex items-center">
-            <div className="flex-1">
-              <Input 
-                type="text" 
-                placeholder="Enter product / service to search" 
-                className="pl-10 pr-20 py-2 rounded-md border-2 border-medical-accent focus:border-medical-accent"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            </div>
-            <Button className="absolute right-0 rounded-l-none h-full bg-medical-accent hover:bg-medical-accent/90">
-              Search
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <NotificationsDropdown />
+            <CartDropdown />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
           </div>
         </div>
-
-        <div className="hidden md:flex items-center space-x-4">
-          <Button variant="outline" className="border-medical-accent text-medical-accent hover:bg-medical-accent/10">
-            Get Best Price
-          </Button>
-        </div>
       </div>
 
-      {/* Navigation */}
-      <div className="bg-medical-primary">
-        <div className="container mx-auto px-4">
-          <nav className="flex overflow-x-auto">
-            {['Building & Construction', 'Electronics & Electrical', 'Industrial Supplies', 'Pharmaceutical', 'Agriculture', 'Food & Beverages'].map((item) => (
-              <button 
-                key={item} 
-                onClick={() => handleCategoryClick(item)}
-                className="px-4 py-3 text-white whitespace-nowrap hover:bg-medical-accent/20 text-sm cursor-pointer"
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-gray-50 px-4 py-2">
+          <div className="py-2">
+            <Input
+              type="text"
+              placeholder="Search..."
+              className="w-full border-gray-300"
+            />
+          </div>
+          <nav className="space-y-2 py-2">
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to="/my-products"
+                  className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                >
+                  My Products
+                </Link>
+                <Link
+                  to="/my-account"
+                  className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                >
+                  My Account
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
               >
-                {item}
-              </button>
-            ))}
+                Login
+              </Link>
+            )}
           </nav>
         </div>
+      )}
+
+      {/* Category Navigation */}
+      <div className="bg-gray-100">
+        <div className="container mx-auto px-4">
+          <div className="flex overflow-x-auto hide-scrollbar py-2 space-x-6 text-sm text-gray-700">
+            <Link to="/category/medical-supplies" className="whitespace-nowrap hover:text-medical-primary">
+              Medical Supplies
+            </Link>
+            <Link to="/category/building-construction" className="whitespace-nowrap hover:text-medical-primary">
+              Building & Construction
+            </Link>
+            <Link to="/category/industrial-machinery" className="whitespace-nowrap hover:text-medical-primary">
+              Industrial Machinery
+            </Link>
+            <Link to="/category/electronics-electrical" className="whitespace-nowrap hover:text-medical-primary">
+              Electronics
+            </Link>
+            <Link to="/category/chemical-products" className="whitespace-nowrap hover:text-medical-primary">
+              Chemical Products
+            </Link>
+            <Link to="/category/agriculture-products" className="whitespace-nowrap hover:text-medical-primary">
+              Agriculture
+            </Link>
+          </div>
+        </div>
       </div>
+      
+      <style jsx>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </header>
   );
 };
