@@ -9,7 +9,7 @@ interface VendorGalleryProps {
 
 const VendorGallery: React.FC<VendorGalleryProps> = ({ images, vendorName }) => {
   return (
-    <Card className="h-full">
+    <Card>
       <CardContent className="p-6">
         <h2 className="text-xl font-semibold mb-4">Photo Gallery</h2>
         <p className="text-gray-500 mb-6">Images of products, facilities and services provided by {vendorName}</p>

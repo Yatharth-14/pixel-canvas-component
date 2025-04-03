@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { MapPin, ThumbsUp, Verified } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -21,8 +22,8 @@ const SupplierCard: React.FC<SupplierProps> = ({
   yearEstablished 
 }) => {
   return (
-    <Card className="h-full transition-all duration-300 hover:shadow-md">
-      <CardContent className="p-5 flex flex-col h-full">
+    <Card className="transition-all duration-300 hover:shadow-md">
+      <CardContent className="p-4">
         <div className="flex items-center mb-4">
           <img 
             src={image} 
@@ -49,7 +50,7 @@ const SupplierCard: React.FC<SupplierProps> = ({
           </div>
         </div>
         
-        <div className="mb-4 flex-1">
+        <div className="mb-4">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Main Products:</h4>
           <div className="flex flex-wrap gap-1">
             {products.map((product, index) => (
@@ -60,7 +61,7 @@ const SupplierCard: React.FC<SupplierProps> = ({
           </div>
         </div>
         
-        <Button variant="outline" className="w-full border-medical-accent text-medical-accent hover:bg-medical-accent/10 mt-auto">
+        <Button variant="outline" className="w-full border-medical-accent text-medical-accent hover:bg-medical-accent/10">
           Contact Supplier
         </Button>
       </CardContent>
@@ -112,7 +113,7 @@ const SupplierSection: React.FC = () => {
           <a href="#" className="text-medical-accent hover:underline text-sm">View All Suppliers</a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {suppliers.map((supplier, index) => (
             <SupplierCard
               key={index}

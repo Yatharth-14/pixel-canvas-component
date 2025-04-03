@@ -23,9 +23,9 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
   items,
 }) => {
   return (
-    <Card className="h-full transition-all duration-300 hover:shadow-md">
-      <CardContent className="p-5">
-        <div className="flex items-center mb-4">
+    <Card className="transition-all duration-300 hover:shadow-md">
+      <CardContent className="p-4">
+        <div className="flex items-center mb-3">
           <img
             src={image}
             alt={title}
@@ -37,14 +37,14 @@ const CategoryItem: React.FC<CategoryItemProps> = ({
             </h3>
           </Link>
         </div>
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
           {items.slice(0, 4).map((item) => (
             <li
               key={item.id}
               className="text-sm text-gray-700 hover:text-medical-accent flex items-center"
             >
-              <ChevronRight className="h-4 w-4 mr-1 text-medical-accent/70 flex-shrink-0" />
-              <Link to={`/product/${item.id}`} className="hover:underline line-clamp-1">
+              <ChevronRight className="h-4 w-4 mr-1 text-medical-accent/70" />
+              <Link to={`/product/${item.id}`} className="hover:underline">
                 {item.name}
               </Link>
             </li>
@@ -178,7 +178,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ title, slug }) => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {productGroups.map((group) => (
             <CategoryItem
               key={group.id}

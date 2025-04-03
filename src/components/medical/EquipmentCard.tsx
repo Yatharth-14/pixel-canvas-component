@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 interface EquipmentItemProps {
   label: string;
@@ -29,11 +28,11 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({
   className
 }) => {
   return (
-    <Card className={cn(
-      "equipment-card h-full bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 animate-scale-in",
+    <div className={cn(
+      "equipment-card bg-white rounded-lg overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 animate-scale-in",
       className
     )}>
-      <CardHeader className="p-5 pb-0">
+      <div className="p-5">
         <div className="flex items-center mb-4">
           <img 
             src={imageSrc} 
@@ -43,15 +42,13 @@ const EquipmentCard: React.FC<EquipmentCardProps> = ({
           />
           <h3 className="text-lg font-medium text-medical-primary ml-4">{title}</h3>
         </div>
-      </CardHeader>
-      <CardContent className="p-5 pt-0">
         <ul className="space-y-1">
           {items.map((item, index) => (
             <EquipmentItem key={index} label={item} />
           ))}
         </ul>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

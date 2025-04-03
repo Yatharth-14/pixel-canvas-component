@@ -14,9 +14,6 @@
 
 .equipment-card {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .equipment-card:hover {
@@ -35,9 +32,6 @@
 /* India Mart Specific Styles */
 .supplier-card {
   transition: all 0.3s ease;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .supplier-card:hover {
@@ -100,51 +94,4 @@
 
 .star-rating:hover .star {
   animation: star-pulse 0.5s ease-in-out;
-}
-
-/* Card consistency */
-.card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-content {
-  padding: 1.25rem;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Button consistency */
-.btn {
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 2.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  font-weight: 500;
-  border-radius: 0.375rem;
-  transition: all 0.2s;
-}
-
-/* General spacing and alignment */
-.flex-between {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.flex-col-center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
