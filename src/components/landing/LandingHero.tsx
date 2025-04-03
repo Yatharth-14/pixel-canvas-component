@@ -1,21 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
-import { getCategories, Category } from '@/Backend/services/products';
 
 const LandingHero: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getCategories();
-      setCategories(data);
-    };
-    
-    fetchCategories();
-  }, []);
+  const popularCategories = [
+    'Medical Supplies', 'Building Materials', 'Industrial Machinery', 
+    'Electronics', 'Chemical Products', 'Agriculture Products'
+  ];
 
   return (
     <div className="bg-gradient-to-r from-medical-highlight to-blue-50 py-12">
@@ -31,14 +23,13 @@ const LandingHero: React.FC = () => {
               Join over 10 million businesses today!
             </p>
             <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
+              {popularCategories.map((category) => (
                 <Button 
-                  key={category.id} 
+                  key={category} 
                   variant="outline" 
                   className="bg-white border-gray-200 hover:border-medical-accent"
-                  asChild
                 >
-                  <Link to={`/category/${category.slug}`}>{category.name}</Link>
+                  {category}
                 </Button>
               ))}
             </div>

@@ -1,5 +1,5 @@
 
-import IndiamartLanding from '../../components/landing/IndiamartLanding';
+import IndiamartLanding from '../components/landing/IndiamartLanding';
 import { Link } from 'react-router-dom';
 
 const Index = () => {
