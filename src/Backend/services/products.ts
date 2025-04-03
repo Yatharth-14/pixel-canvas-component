@@ -45,7 +45,7 @@ export const getCategories = async (): Promise<Category[]> => {
     return [];
   }
 
-  return data as Category[] || [];
+  return data || [];
 };
 
 export const getProductsByCategory = async (categorySlug: string): Promise<Product[]> => {
@@ -74,7 +74,7 @@ export const getProductsByCategory = async (categorySlug: string): Promise<Produ
     return [];
   }
 
-  return data as Product[] || [];
+  return data || [];
 };
 
 export const getProductDetail = async (productId: string): Promise<Product | null> => {
@@ -93,7 +93,7 @@ export const getProductDetail = async (productId: string): Promise<Product | nul
     return null;
   }
 
-  return data as Product;
+  return data;
 };
 
 export const getFeaturedProducts = async (limit: number = 6): Promise<Product[]> => {
@@ -111,5 +111,5 @@ export const getFeaturedProducts = async (limit: number = 6): Promise<Product[]>
     return [];
   }
 
-  return data as Product[] || [];
+  return data || [];
 };
