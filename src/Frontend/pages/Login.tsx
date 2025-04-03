@@ -14,7 +14,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  password: z.string().min(1, { message: 'Password is required' }),
 });
 
 type LoginValues = z.infer<typeof loginSchema>;
@@ -49,8 +49,8 @@ const Login = () => {
       
       if (result.success) {
         toast({
-          title: 'Logged in successfully',
-          description: `Welcome back!`,
+          title: 'Login successful',
+          description: result.message,
         });
         
         // Redirect to home after successful login
@@ -74,8 +74,8 @@ const Login = () => {
             <Button variant="ghost" size="sm" asChild className="mb-4">
               <Link to="/"><ArrowLeft className="mr-2 h-4 w-4" />Back to Home</Link>
             </Button>
-            <h1 className="text-2xl font-bold text-center text-medical-primary">Login to IndiaMart</h1>
-            <p className="text-center text-gray-500 mt-2">Enter your credentials to access your account</p>
+            <h1 className="text-2xl font-bold text-center text-medical-primary">Login to Your Account</h1>
+            <p className="text-center text-gray-500 mt-2">Welcome back to IndiaMart</p>
           </div>
           
           {error && (
