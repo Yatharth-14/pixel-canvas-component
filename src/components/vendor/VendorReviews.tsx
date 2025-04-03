@@ -124,12 +124,12 @@ const VendorReviews: React.FC<VendorReviewsProps> = ({ vendorId }) => {
           <Card key={review.id}>
             <CardContent className="p-6">
               <div className="flex items-start">
-                <Avatar className="h-10 w-10 mr-4">
+                <Avatar className="h-10 w-10 mr-4 flex-shrink-0">
                   <AvatarImage src={review.avatar} alt={review.userName} />
                   <AvatarFallback>{review.userName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="font-medium text-gray-900">{review.userName}</h3>

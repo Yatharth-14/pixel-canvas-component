@@ -67,7 +67,7 @@ const VendorProductsList: React.FC<VendorProductsListProps> = ({
 
   return (
     <div className="space-y-6">
-      <Card>
+      <Card className="h-full">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold">
@@ -89,9 +89,9 @@ const VendorProductsList: React.FC<VendorProductsListProps> = ({
               <Link
                 to={`/product/${product.id}`}
                 key={product.id}
-                className="group"
+                className="group h-full"
               >
-                <div className="bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+                <div className="h-full flex flex-col bg-white border border-gray-100 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
                   <div className="h-48 overflow-hidden bg-gray-100">
                     <img
                       src={product.image}
@@ -99,7 +99,7 @@ const VendorProductsList: React.FC<VendorProductsListProps> = ({
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <div className="p-4">
+                  <div className="p-4 flex flex-col flex-grow">
                     <h3 className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
                       {product.name}
                     </h3>
@@ -123,7 +123,7 @@ const VendorProductsList: React.FC<VendorProductsListProps> = ({
                         </>
                       )}
                     </div>
-                    <div className="flex items-center">
+                    <div className="flex items-center mt-auto pt-2">
                       <div className="flex items-center">
                         {[...Array(5)].map((_, i) => (
                           <svg
