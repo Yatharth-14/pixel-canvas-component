@@ -25,7 +25,7 @@ export const getNotifications = async (): Promise<Notification[]> => {
     return [];
   }
 
-  return data || [];
+  return data as Notification[] || [];
 };
 
 export const getUnreadNotificationsCount = async (): Promise<number> => {
