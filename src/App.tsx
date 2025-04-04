@@ -15,6 +15,10 @@ import Login from "./Frontend/pages/Login";
 import Register from "./Frontend/pages/Register";
 import CategoryPage from "./pages/CategoryPage";
 import { AuthProvider } from "./Backend/contexts/AuthContext";
+import CartPage from "./Frontend/pages/CartPage";
+import UserProfile from "./Frontend/pages/UserProfile";
+import CheckoutPage from "./Frontend/pages/CheckoutPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -29,13 +33,21 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/product/:productId" element={<ProductDetail />} />
-              <Route path="/my-products" element={<MyProducts />} />
-              <Route path="/add-product" element={<AddProduct />} />
-              <Route path="/vendor/:vendorId" element={<VendorProfile />} />
-              <Route path="/vendor/:vendorId/edit" element={<EditVendorProfile />} />
+              <Route path="/category/:categoryId" element={<CategoryPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/category/:categoryId" element={<CategoryPage />} />
+              
+              {/* Protected Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/my-products" element={<MyProducts />} />
+                <Route path="/add-product" element={<AddProduct />} />
+                <Route path="/vendor/:vendorId" element={<VendorProfile />} />
+                <Route path="/vendor/:vendorId/edit" element={<EditVendorProfile />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/profile" element={<UserProfile />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+              </Route>
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
