@@ -7,7 +7,7 @@ const ProductDetail = () => {
   
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <ProductDetailView productId={productId} />
+      {productId && <ProductDetailView productId={productId} />}
     </div>
   );
 };

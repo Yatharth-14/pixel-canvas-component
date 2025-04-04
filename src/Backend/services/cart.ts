@@ -1,4 +1,3 @@
-
 import { supabase } from '../supabase/client';
 import { Product } from './products';
 
@@ -31,8 +30,21 @@ export const getCartItems = async (): Promise<CartItem[]> => {
     return [];
   }
 
-  // Use type assertion since we know the structure
-  return (data || []) as CartItem[];
+  // Convert and type assert the data
+  return (data || []).map(item => {
+    // If product relation failed, provide a fallback empty product
+    if ('error' in item.product) {
+      return {
+        id: item.id,
+        product_id: item.product_id,
+        user_id: item.user_id,
+        quantity: item.quantity,
+        // We're not returning the product property since it failed to load
+      } as CartItem;
+    }
+    
+    return item as unknown as CartItem;
+  });
 };
 
 export const addToCart = async (productId: string, quantity: number = 1): Promise<boolean> => {

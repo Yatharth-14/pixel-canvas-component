@@ -5,7 +5,7 @@ export type Product = {
   id: string;
   name: string;
   slug: string;
-  description: string;
+  description: string | null;
   price: number;
   discounted_price: number | null;
   category_id: string;
@@ -74,7 +74,16 @@ export const getProductsByCategory = async (categorySlug: string): Promise<Produ
     return [];
   }
 
-  return data || [];
+  // Convert and properly type the response
+  return (data || []).map(product => {
+    return {
+      ...product,
+      // Handle potential relation error by providing empty array
+      images: 'error' in product.images 
+        ? [] 
+        : (product.images as unknown as Product['images'])
+    } as Product;
+  });
 };
 
 export const getProductDetail = async (productId: string): Promise<Product | null> => {
@@ -93,7 +102,12 @@ export const getProductDetail = async (productId: string): Promise<Product | nul
     return null;
   }
 
-  return data;
+  // Type assertion to handle potential relation errors
+  return {
+    ...data,
+    images: 'error' in data.images ? [] : (data.images as unknown as Product['images']),
+    specifications: 'error' in data.specifications ? [] : (data.specifications as unknown as Product['specifications'])
+  } as Product;
 };
 
 export const getFeaturedProducts = async (limit: number = 6): Promise<Product[]> => {
@@ -111,5 +125,14 @@ export const getFeaturedProducts = async (limit: number = 6): Promise<Product[]>
     return [];
   }
 
-  return data || [];
+  // Convert and properly type the response
+  return (data || []).map(product => {
+    return {
+      ...product,
+      // Handle potential relation error by providing empty array
+      images: 'error' in product.images 
+        ? [] 
+        : (product.images as unknown as Product['images'])
+    } as Product;
+  });
 };
