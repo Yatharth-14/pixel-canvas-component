@@ -14,13 +14,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const LandingHeader: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   const handleLogout = async () => {
     await logout();
+  };
+
+  // Function to get user initials for avatar fallback
+  const getUserInitials = () => {
+    if (!user || !user.name) return 'U';
+    return user.name.split(' ')
+      .map(part => part.charAt(0))
+      .join('')
+      .toUpperCase()
+      .substring(0, 2);
   };
 
   return (
@@ -59,19 +70,31 @@ const LandingHeader: React.FC = () => {
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                    <User className="h-5 w-5" />
+                  <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full">
+                    <Avatar>
+                      <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                    </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <Avatar className="h-8 w-8">
+                      <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col space-y-0.5">
+                      <p className="text-sm font-medium">{user?.name || 'User'}</p>
+                      <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/my-products">My Products</Link>
+                    <Link to="/profile" className="cursor-pointer">My Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/my-account">My Account</Link>
+                    <Link to="/my-products" className="cursor-pointer">My Products</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -111,21 +134,30 @@ const LandingHeader: React.FC = () => {
           <nav className="space-y-2 py-2">
             {isAuthenticated ? (
               <>
+                <div className="flex items-center space-x-2 px-3 py-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>{getUserInitials()}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-medium text-sm">{user?.name || 'User'}</p>
+                    <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                  </div>
+                </div>
+                <Link
+                  to="/profile"
+                  className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                >
+                  My Profile
+                </Link>
                 <Link
                   to="/my-products"
                   className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
                 >
                   My Products
                 </Link>
-                <Link
-                  to="/my-account"
-                  className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
-                >
-                  My Account
-                </Link>
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  className="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 rounded"
                 >
                   Logout
                 </button>
