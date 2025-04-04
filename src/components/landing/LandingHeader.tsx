@@ -77,24 +77,24 @@ const LandingHeader: React.FC = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
-                  <div className="flex items-center justify-start gap-2 p-2">
-                    <Avatar className="h-8 w-8">
+                  <div className="flex items-center justify-start gap-2 p-3">
+                    <Avatar className="h-10 w-10">
                       <AvatarFallback>{getUserInitials()}</AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-col space-y-0.5">
-                      <p className="text-sm font-medium">{user?.name || 'User'}</p>
-                      <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    <div className="flex flex-col space-y-1">
+                      <p className="font-medium text-sm leading-tight">{user?.name || 'User'}</p>
+                      <p className="text-xs text-gray-500 leading-tight whitespace-normal break-words" style={{ maxWidth: "180px" }}>{user?.email}</p>
                     </div>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/profile" className="cursor-pointer">My Profile</Link>
+                    <Link to="/profile" className="cursor-pointer py-2">My Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/my-products" className="cursor-pointer">My Products</Link>
+                    <Link to="/my-products" className="cursor-pointer py-2">My Products</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600">
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600 py-2">
                     Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -134,30 +134,30 @@ const LandingHeader: React.FC = () => {
           <nav className="space-y-2 py-2">
             {isAuthenticated ? (
               <>
-                <div className="flex items-center space-x-2 px-3 py-2">
-                  <Avatar className="h-8 w-8">
+                <div className="flex items-center space-x-3 px-3 py-3 bg-white rounded-md shadow-sm">
+                  <Avatar className="h-10 w-10">
                     <AvatarFallback>{getUserInitials()}</AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="font-medium text-sm">{user?.name || 'User'}</p>
-                    <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    <p className="text-xs text-gray-500 break-words" style={{ maxWidth: "200px" }}>{user?.email}</p>
                   </div>
                 </div>
                 <Link
                   to="/profile"
-                  className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  className="block px-3 py-2.5 text-gray-700 hover:bg-gray-100 rounded"
                 >
                   My Profile
                 </Link>
                 <Link
                   to="/my-products"
-                  className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
+                  className="block px-3 py-2.5 text-gray-700 hover:bg-gray-100 rounded"
                 >
                   My Products
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-3 py-2 text-red-600 hover:bg-red-50 rounded"
+                  className="block w-full text-left px-3 py-2.5 text-red-600 hover:bg-red-50 rounded"
                 >
                   Logout
                 </button>
