@@ -1,38 +1,17 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Menu, X, User } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import NotificationsDropdown from '../header/NotificationsDropdown';
 import CartDropdown from '../header/CartDropdown';
-import { useAuth } from '@/Backend/contexts/AuthContext';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import UserMenu from '../header/UserMenu';
+import MobileMenu from '../header/MobileMenu';
+import SearchBar from '../header/SearchBar';
+import CategoryNav from '../header/CategoryNav';
 
 const LandingHeader: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isAuthenticated, logout, user } = useAuth();
-
-  const handleLogout = async () => {
-    await logout();
-  };
-
-  // Function to get user initials for avatar fallback
-  const getUserInitials = () => {
-    if (!user || !user.name) return 'U';
-    return user.name.split(' ')
-      .map(part => part.charAt(0))
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
-  };
 
   return (
     <header className="bg-white shadow-sm">
@@ -45,65 +24,14 @@ const LandingHeader: React.FC = () => {
             </Link>
           </div>
 
-          {/* Search Bar - Hidden on Mobile */}
-          <div className="hidden md:flex flex-1 max-w-xl mx-6">
-            <div className="relative w-full">
-              <Input
-                type="text"
-                placeholder="Search products, suppliers, categories..."
-                className="pr-10 border-gray-300 focus:border-medical-primary focus:ring-medical-primary"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-medical-primary"
-              >
-                <Search className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
+          {/* Search Bar */}
+          <SearchBar />
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-1">
             <NotificationsDropdown />
             <CartDropdown />
-            
-            {isAuthenticated ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full">
-                    <Avatar>
-                      <AvatarFallback>{getUserInitials()}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <div className="flex items-center justify-start gap-2 p-3">
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback>{getUserInitials()}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col space-y-1">
-                      <p className="font-medium text-sm leading-tight">{user?.name || 'User'}</p>
-                      <p className="text-xs text-gray-500 leading-tight whitespace-normal break-words" style={{ maxWidth: "180px" }}>{user?.email}</p>
-                    </div>
-                  </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="cursor-pointer py-2">My Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/my-products" className="cursor-pointer py-2">My Products</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 focus:text-red-600 py-2">
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button variant="ghost" asChild>
-                <Link to="/login">Login</Link>
-              </Button>
-            )}
+            <UserMenu />
           </div>
 
           {/* Mobile Menu Button */}
@@ -122,83 +50,10 @@ const LandingHeader: React.FC = () => {
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-gray-50 px-4 py-2">
-          <div className="py-2">
-            <Input
-              type="text"
-              placeholder="Search..."
-              className="w-full border-gray-300"
-            />
-          </div>
-          <nav className="space-y-2 py-2">
-            {isAuthenticated ? (
-              <>
-                <div className="flex items-center space-x-3 px-3 py-3 bg-white rounded-md shadow-sm">
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback>{getUserInitials()}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-medium text-sm">{user?.name || 'User'}</p>
-                    <p className="text-xs text-gray-500 break-words" style={{ maxWidth: "200px" }}>{user?.email}</p>
-                  </div>
-                </div>
-                <Link
-                  to="/profile"
-                  className="block px-3 py-2.5 text-gray-700 hover:bg-gray-100 rounded"
-                >
-                  My Profile
-                </Link>
-                <Link
-                  to="/my-products"
-                  className="block px-3 py-2.5 text-gray-700 hover:bg-gray-100 rounded"
-                >
-                  My Products
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-3 py-2.5 text-red-600 hover:bg-red-50 rounded"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                className="block px-3 py-2 text-gray-700 hover:bg-gray-100 rounded"
-              >
-                Login
-              </Link>
-            )}
-          </nav>
-        </div>
-      )}
+      <MobileMenu isOpen={mobileMenuOpen} />
 
       {/* Category Navigation */}
-      <div className="bg-gray-100">
-        <div className="container mx-auto px-4">
-          <div className="flex overflow-x-auto hide-scrollbar py-2 space-x-6 text-sm text-gray-700">
-            <Link to="/category/medical-supplies" className="whitespace-nowrap hover:text-medical-primary">
-              Medical Supplies
-            </Link>
-            <Link to="/category/building-construction" className="whitespace-nowrap hover:text-medical-primary">
-              Building & Construction
-            </Link>
-            <Link to="/category/industrial-machinery" className="whitespace-nowrap hover:text-medical-primary">
-              Industrial Machinery
-            </Link>
-            <Link to="/category/electronics-electrical" className="whitespace-nowrap hover:text-medical-primary">
-              Electronics
-            </Link>
-            <Link to="/category/chemical-products" className="whitespace-nowrap hover:text-medical-primary">
-              Chemical Products
-            </Link>
-            <Link to="/category/agriculture-products" className="whitespace-nowrap hover:text-medical-primary">
-              Agriculture
-            </Link>
-          </div>
-        </div>
-      </div>
+      <CategoryNav />
       
       <style>
         {`
