@@ -31,7 +31,8 @@ export const getCartItems = async (): Promise<CartItem[]> => {
     return [];
   }
 
-  return data || [];
+  // Use type assertion since we know the structure
+  return (data || []) as CartItem[];
 };
 
 export const addToCart = async (productId: string, quantity: number = 1): Promise<boolean> => {
@@ -118,5 +119,5 @@ export const getCartCount = async (): Promise<number> => {
     return 0;
   }
 
-  return data.reduce((sum, item) => sum + item.quantity, 0);
+  return (data as { quantity: number }[]).reduce((sum, item) => sum + item.quantity, 0);
 };

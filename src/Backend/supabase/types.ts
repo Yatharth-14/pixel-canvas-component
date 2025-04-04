@@ -30,6 +30,186 @@ export type Database = {
           name?: string | null
         }
         Relationships: []
+      },
+      cart_items: {
+        Row: {
+          id: string
+          user_id: string
+          product_id: string
+          quantity: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          product_id: string
+          quantity?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          product_id?: string
+          quantity?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      },
+      notifications: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          message: string
+          is_read: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          message: string
+          is_read?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          message?: string
+          is_read?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      },
+      products: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string | null
+          price: number
+          discounted_price: number | null
+          sku: string | null
+          brand: string | null
+          category_id: string
+          in_stock: boolean
+          rating: number | null
+          review_count: number | null
+          vendor_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description?: string | null
+          price: number
+          discounted_price?: number | null
+          sku?: string | null
+          brand?: string | null
+          category_id: string
+          in_stock?: boolean
+          rating?: number | null
+          review_count?: number | null
+          vendor_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string | null
+          price?: number
+          discounted_price?: number | null
+          sku?: string | null
+          brand?: string | null
+          category_id?: string
+          in_stock?: boolean
+          rating?: number | null
+          review_count?: number | null
+          vendor_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      },
+      product_images: {
+        Row: {
+          id: string
+          product_id: string
+          image_url: string
+          is_primary: boolean | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          image_url: string
+          is_primary?: boolean | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          image_url?: string
+          is_primary?: boolean | null
+          created_at?: string
+        }
+        Relationships: []
+      },
+      product_specifications: {
+        Row: {
+          id: string
+          product_id: string
+          name: string
+          value: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          name: string
+          value: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          name?: string
+          value?: string
+          created_at?: string
+        }
+        Relationships: []
+      },
+      categories: {
+        Row: {
+          id: string
+          name: string
+          slug: string
+          description: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          slug: string
+          description?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          slug?: string
+          description?: string | null
+          created_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -143,3 +323,4 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
